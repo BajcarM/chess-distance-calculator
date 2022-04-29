@@ -1,8 +1,6 @@
 const gameboard = document.querySelector(".gameboard");
 const figuresContainer = document.querySelector(".figures-container");
-const coordsArray = "abcdefghijklmnopqrstuvwxyz".split("");
-
-const boardSize = 8;
+const lettersArray = "abcdefghijklmnopqrstuvwxyz".split("");
 
 const figures = [
   {
@@ -69,6 +67,7 @@ const figures = [
   },
 ];
 
+let boardSize = 8;
 let selectedFigure = null;
 let position = "";
 
@@ -83,16 +82,16 @@ gameboard.addEventListener("click", (e) => {
     }, 2000);
     return;
   }
-  position = e.target.dataset.coords;
+  position = [e.target.dataset.row, e.target.dataset.col];
   gameboard.querySelectorAll(".tile").forEach((tile) => {
     tile.textContent = "";
     tile.classList.remove(`tile-selected`, `figure-${selectedFigure.name}`);
   });
 
-  e.target.textContent = "0";
+  e.target.innerHTML = "&middot;";
   e.target.classList.add(`tile-selected`, `figure-${selectedFigure.name}`);
 
-  checkPossibleMoves(position, selectedFigure.moves());
+  checkPossibleMoves(position[0], position[1], selectedFigure.moves());
 });
 
 figuresContainer.addEventListener("click", (e) => {
@@ -131,20 +130,43 @@ function createGameboard(rows, cols) {
       tiles.push(
         `<div class="tile tile-empty tile-${
           tileColors[(i + j) % 2]
-        }" data-coords="${i}${j}"></div>`
+        }" data-row="${i}" data-col="${j}"></div>`
       );
     }
   }
   gameboard.innerHTML = tiles.join("");
 
+  // Create coordinates on the sides
+
+  coordsArray = [""];
+
+  do {
+    let bufferArray = [];
+    for (i = 0; i < lettersArray.length; i++) {
+      for (j = 0; j < coordsArray.length; j++) {
+        bufferArray.push(lettersArray[i] + coordsArray[j]);
+      }
+    }
+    coordsArray = bufferArray;
+  } while (coordsArray.length < boardSize);
+
+  let containerNumbers = [];
+  let containerLetters = [];
+
   for (i = 0; i < boardSize; i++) {
-    document.querySelector(".coords-numbers-container").innerHTML += `
-        <div class="coord">${i + 1}</div>           
-    `;
-    document.querySelector(".coords-letters-container").innerHTML += `
-        <div class="coord">${coordsArray[i]}</div>    
-    `;
+    containerNumbers.push(`<div class="coord">${i + 1}</div>`);
+    containerLetters.push(`<div class="coord">${coordsArray[i]}</div>`);
   }
+  document.querySelector(".coords-numbers-container").innerHTML =
+    containerNumbers.join("");
+  document.querySelector(".coords-letters-container").innerHTML =
+    containerLetters.join("");
+
+  // Adjust the font size on tiles based on tile size
+
+  document.querySelectorAll(".tile").forEach((tile) => {
+    tile.style.fontSize = `${32 / boardSize}rem`;
+  });
 }
 
 function createFigures() {
@@ -162,8 +184,8 @@ function createFigures() {
     figuresArray.join("");
 }
 
-function checkPossibleMoves(coords, movesArray) {
-  let currentStep = [coords];
+function checkPossibleMoves(coordsRow, coordsCol, movesArray) {
+  let currentStep = [[coordsRow, coordsCol]];
   let nextStep = [];
   stepCount = "1";
   do {
@@ -172,14 +194,15 @@ function checkPossibleMoves(coords, movesArray) {
       const col = parseInt(currentStep[i][1]);
 
       possibleMovesCoords = movesArray.reduce((acc, item) => {
-        acc.push(`${row + parseInt(item[0])}${col + parseInt(item[1])}`);
+        acc.push([row + parseInt(item[0]), col + parseInt(item[1])]);
         return acc;
       }, []);
 
       for (j = 0; j < possibleMovesCoords.length; j++) {
         const possibleMove = document.querySelector(
-          `[data-coords="${possibleMovesCoords[j]}"]`
+          `[data-row="${possibleMovesCoords[j][0]}"][ data-col="${possibleMovesCoords[j][1]}"]`
         );
+
         if (possibleMove && possibleMove.textContent.length === 0) {
           nextStep.push(possibleMovesCoords[j]);
           possibleMove.textContent = stepCount;
@@ -192,3 +215,14 @@ function checkPossibleMoves(coords, movesArray) {
     stepCount++;
   } while (currentStep.length > 0);
 }
+
+document.querySelector(".btn-input").addEventListener("click", (e) => {
+  e.preventDefault();
+  if (document.querySelector(".input").value > 0) {
+    boardSize = parseInt(document.querySelector(".input").value);
+    selectedFigure = null;
+    position = "";
+    createGameboard(boardSize, boardSize);
+    createFigures();
+  }
+});
