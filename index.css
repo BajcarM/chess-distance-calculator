@@ -1,6 +1,14 @@
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  text-transform: capitalize;
+  box-sizing: border-box;
+}
+
+.gameboard-container {
+  margin: 20px auto;
+  display: grid;
+  place-items: center;
 }
 
 .gameboard {
@@ -13,7 +21,7 @@ body {
 .tile {
   display: grid;
   place-items: center;
-  min-height: 2rem;
+  min-height: 3rem;
   font-size: 2rem;
 }
 
@@ -22,7 +30,7 @@ body {
 }
 
 .tile-black {
-  background-color: rgb(112, 112, 112);
+  background-color: rgb(111, 111, 111);
   color: white;
 }
 
@@ -30,6 +38,88 @@ body {
   min-height: 2rem;
 }
 
-.red {
-  background-color: red;
+.tile-selected {
+  /* background-color: red; */
+
+  font-weight: bold;
+  font-size: 0rem;
+
+  
+}
+
+.figures-container {
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  margin: auto;
+  width: 80vw;
+  
+}
+
+.figure-container {
+  display: grid;
+  place-items: center;
+  margin:10px auto;
+  
+
+}
+
+.figure {
+  min-width: 80px;
+  min-height: 80px;
+}
+
+.figure-king {
+  background-image: url(./images/icons8-king-96.png);
+  background-position: center;
+  background-size: cover;
+}
+
+.figure-knight {
+  background-image: url(./images/icons8-knight-96.png);
+  background-position: center;
+  background-size: cover;
+}
+
+.figure-pawn {
+  background-image: url(./images/icons8-pawn-96.png);
+  background-position: center;
+  background-size: cover;
+}
+
+.figure-queen {
+  background-image: url(./images/icons8-queen-96.png);
+  background-position: center;
+  background-size: cover;
+}
+
+.figure-rook {
+  background-image: url(./images/icons8-rook-96.png);
+  background-position: center;
+  background-size: cover;
+}
+
+.figure-bishop {
+  background-image: url(./images/icons8-bishop-96.png);
+  background-position: center;
+  background-size: cover;
+}
+
+.figure-selected {
+  /* border: solid 3px red; */
+  box-shadow: 1px 1px 5px;
+
+}
+
+.modal {
+  position: fixed;
+  height: 30vh;
+  width: 100%;
+  top: 20vh;
+  background-color: white;
+  opacity: 90%;
+  color: red;
+  font-size: 3rem;
+  display: none;
+  place-items: center;
 }
