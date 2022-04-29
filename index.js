@@ -1,18 +1,24 @@
 const gameboard = document.querySelector(".gameboard");
 const figuresContainer = document.querySelector(".figures-container");
+const coordsArray = "abcdefghijklmnopqrstuvwxyz".split("");
+
+const boardSize = 8;
 
 const figures = [
   {
-    name: "king",
+    name: "pawn",
     moves: function () {
-      const king = [];
-      for (i = -1; i < 2; i++) {
-        for (j = -1; j < 2; j++) {
-          king.push([i, j]);
-        }
+      return [["-1", "0"]];
+    },
+  },
+  {
+    name: "bishop",
+    moves: function () {
+      const bishop = [];
+      for (i = -(boardSize - 1); i < boardSize; i++) {
+        bishop.push([i, i], [i, -i]);
       }
-
-      return king;
+      return bishop;
     },
   },
   {
@@ -29,39 +35,36 @@ const figures = [
     },
   },
   {
-    name: "pawn",
-    moves: function () {
-      return [["-1", "0"]];
-    },
-  },
-  {
     name: "rook",
     moves: function () {
       const rook = [];
-      for (i = -7; i < 8; i++) {
+      for (i = -(boardSize - 1); i < boardSize; i++) {
         rook.push(["0", i], [i, "0"]);
       }
       return rook;
     },
   },
   {
-    name: "bishop",
-    moves: function () {
-      const bishop = [];
-      for (i = -7; i < 8; i++) {
-        bishop.push([i, i], [i, -i]);
-      }
-      return bishop;
-    },
-  },
-  {
     name: "queen",
     moves: function () {
       const queen = [];
-      for (i = -7; i < 8; i++) {
+      for (i = -(boardSize - 1); i < boardSize; i++) {
         queen.push([i, i], [i, -i], ["0", i], [i, "0"]);
       }
       return queen;
+    },
+  },
+  {
+    name: "king",
+    moves: function () {
+      const king = [];
+      for (i = -1; i < 2; i++) {
+        for (j = -1; j < 2; j++) {
+          king.push([i, j]);
+        }
+      }
+
+      return king;
     },
   },
 ];
@@ -69,7 +72,7 @@ const figures = [
 let selectedFigure = null;
 let position = "";
 
-createGameboard(8, 8);
+createGameboard(boardSize, boardSize);
 createFigures();
 
 gameboard.addEventListener("click", (e) => {
@@ -116,6 +119,10 @@ figuresContainer.addEventListener("click", (e) => {
 });
 
 function createGameboard(rows, cols) {
+  gameboard.style.gridTemplateColumns = `repeat(${boardSize}, 1fr)`;
+  document.querySelector(
+    ".coords-numbers-container"
+  ).style.gridTemplateColumns = `repeat(${boardSize}, 1fr)`;
   gameboard.innerHTML = "";
   let tiles = [];
   let tileColors = ["white", "black"];
@@ -129,6 +136,15 @@ function createGameboard(rows, cols) {
     }
   }
   gameboard.innerHTML = tiles.join("");
+
+  for (i = 0; i < boardSize; i++) {
+    document.querySelector(".coords-numbers-container").innerHTML += `
+        <div class="coord">${i + 1}</div>           
+    `;
+    document.querySelector(".coords-letters-container").innerHTML += `
+        <div class="coord">${coordsArray[i]}</div>    
+    `;
+  }
 }
 
 function createFigures() {

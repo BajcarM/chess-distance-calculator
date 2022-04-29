@@ -5,13 +5,45 @@ body {
   box-sizing: border-box;
 }
 
-.gameboard-container {
-  margin: 20px auto;
+section {
   display: grid;
   place-items: center;
 }
 
+.gameboard-container {
+  margin: auto;
+  display: grid;
+  place-items: center;
+  grid-template-columns: repeat(20, 1fr);
+  grid-template-rows: repeat(20, 1fr);
+}
+
+.coords-letters-container {
+  grid-column: 1;
+  grid-row: 2 / span 18;
+  display: grid;
+  height: 100%;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.coords-numbers-container {
+  grid-column: 2 / span 18;
+  grid-row: 1;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  width: 100%;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.coord {
+  margin: auto;
+}
+
 .gameboard {
+  grid-column: 2 / span 18;
+  grid-row: 2 / span 18;
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   height: 700px;
@@ -43,8 +75,6 @@ body {
 
   font-weight: bold;
   font-size: 0rem;
-
-  
 }
 
 .figures-container {
@@ -53,15 +83,13 @@ body {
   justify-items: center;
   margin: auto;
   width: 80vw;
-  
+  max-width: 700px;
 }
 
 .figure-container {
   display: grid;
   place-items: center;
-  margin:10px auto;
-  
-
+  margin: 10px auto;
 }
 
 .figure {
@@ -108,7 +136,6 @@ body {
 .figure-selected {
   /* border: solid 3px red; */
   box-shadow: 1px 1px 5px;
-
 }
 
 .modal {
