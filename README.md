@@ -1,4 +1,4 @@
-# chess-distance-calculator
+# chess-pathfinder
 Calculates and maps the distance for each figure. 
 
 Just choose yor figure, place it on the board and calculator will compute number of steps needed to get to the other tiles.
