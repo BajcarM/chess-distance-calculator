@@ -7,3 +7,7 @@ You can resize the board to any size (square). Letter coords will react to the s
 
 Dont worry text on tiles will resize accordingly ;-)
 
+Try it!!!
+https://bajcarm.github.io/chess-pathfinder/
+
+![image](https://user-images.githubusercontent.com/102542768/168008092-b9c13839-b384-4948-baf4-74890ba79761.png)
